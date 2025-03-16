@@ -146,6 +146,17 @@ false \
 /workspace/output_mcore_llama3_1
 ```
 
+#### 双机预训练示例
+
+```bash
+# run on pod0
+cd /workspace/Pai-Megatron-Patch/examples/llama3_1 && export WORLD_SIZE=2 RANK=0 KUBERNETES_CONTAINER_RESOURCE_GPU=8 MASTER_ADDR=localhost MASTER_PORT=29500 && NCCL_TUNER_PLUGIN=none sh run_mcore_llama3_1.sh dlc 8B 4 32 1e-5 1e-6 4096 4096 bf16 4 2 1 true true true false false false 10000 /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-ckpts/Meta-Llama-3.1-8B/mcore-tp4-pp2 5000000 2000000 /workspace/output_mcore_llama3_1
+```
+```bash
+# run on pod1
+cd /workspace/Pai-Megatron-Patch/examples/llama3_1 && export WORLD_SIZE=2 RANK=1 KUBERNETES_CONTAINER_RESOURCE_GPU=8 MASTER_ADDR=<address of pod0> MASTER_PORT=29500 && NCCL_TUNER_PLUGIN=none sh run_mcore_llama3_1.sh dlc 8B 4 32 1e-5 1e-6 4096 4096 bf16 4 2 1 true true true false false false 10000 /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-ckpts/Meta-Llama-3.1-8B/mcore-tp4-pp2 5000000 2000000 /workspace/output_mcore_llama3_1
+```
+
 #### 指令微调示例
 制作idxmap用于微调的数据集可以参考[链接](https://github.com/alibaba/Pai-Megatron-Patch/tree/main/toolkits/sft_data_preprocessing)。
 当准备好微调数据集后，将SFT开关设置为`true`即可进行指令微调。
