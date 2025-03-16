@@ -66,8 +66,9 @@ HF_CKPT_PATH=$10              # HF的CKPT的路径【可选，mg2hf=true时必�
 例如，使用下述脚本将checkpoint转换到MCore并检查输出
 
 ```bash
+source /usr/local/gib/scripts/set_nccl_env.sh
 cd /workspace/Pai-Megatron-Patch/toolkits/model_checkpoints_convertor/llama
-NCCL_TUNER_PLUGIN=none bash hf2mcore_convertor_llama3_1.sh \
+bash hf2mcore_convertor_llama3_1.sh \
 8B \
 /mnt/llama3-ckpts/Meta-Llama-3.1-8B    \
 /mnt/llama3-ckpts/Meta-Llama-3.1-8B/mcore-tp4-pp2  \
@@ -117,8 +118,9 @@ OUTPUT_BASEPATH=${25}           # 训练输出日志文件路径
 备注：当`AC=offload`或`full`时，可设置`MP_AC_LAYERS`环境变量来控制Checkpointing或Offload的TransformerLayer层数（默认值：`1`）。
 
 ```bash
+source /usr/local/gib/scripts/set_nccl_env.sh
 cd /workspace/Pai-Megatron-Patch/examples/llama3_1
-NCCL_TUNER_PLUGIN=none sh run_mcore_llama3_1.sh  \
+sh run_mcore_llama3_1.sh  \
 dsw  \
 8B   \
 4    \
@@ -150,11 +152,14 @@ false \
 
 ```bash
 # run on pod0
-cd /workspace/Pai-Megatron-Patch/examples/llama3_1 && export WORLD_SIZE=2 RANK=0 KUBERNETES_CONTAINER_RESOURCE_GPU=8 MASTER_ADDR=localhost MASTER_PORT=29500 && NCCL_TUNER_PLUGIN=none sh run_mcore_llama3_1.sh dlc 8B 4 32 1e-5 1e-6 4096 4096 bf16 4 2 1 true true true false false false 10000 /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-ckpts/Meta-Llama-3.1-8B/mcore-tp4-pp2 5000000 2000000 /workspace/output_mcore_llama3_1
+source /usr/local/gib/scripts/set_nccl_env.sh
+cd /workspace/Pai-Megatron-Patch/examples/llama3_1 && export WORLD_SIZE=2 RANK=0 KUBERNETES_CONTAINER_RESOURCE_GPU=8 MASTER_ADDR=localhost MASTER_PORT=29500 && sh run_mcore_llama3_1.sh dlc 8B 4 32 1e-5 1e-6 4096 4096 bf16 4 2 1 true true true false false false 10000 /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-ckpts/Meta-Llama-3.1-8B/mcore-tp4-pp2 5000000 2000000 /workspace/output_mcore_llama3_1
 ```
 ```bash
 # run on pod1
-cd /workspace/Pai-Megatron-Patch/examples/llama3_1 && export WORLD_SIZE=2 RANK=1 KUBERNETES_CONTAINER_RESOURCE_GPU=8 MASTER_ADDR=<address of pod0> MASTER_PORT=29500 && NCCL_TUNER_PLUGIN=none sh run_mcore_llama3_1.sh dlc 8B 4 32 1e-5 1e-6 4096 4096 bf16 4 2 1 true true true false false false 10000 /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-ckpts/Meta-Llama-3.1-8B/mcore-tp4-pp2 5000000 2000000 /workspace/output_mcore_llama3_1
+source /usr/local/gib/scripts/set_nccl_env.sh
+cat /root/.ssh/config
+cd /workspace/Pai-Megatron-Patch/examples/llama3_1 && export WORLD_SIZE=2 RANK=1 KUBERNETES_CONTAINER_RESOURCE_GPU=8 MASTER_ADDR=<address of pod0> MASTER_PORT=29500 && sh run_mcore_llama3_1.sh dlc 8B 4 32 1e-5 1e-6 4096 4096 bf16 4 2 1 true true true false false false 10000 /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-datasets/wudao_llama3bpe_content_document /workspace/llama3-ckpts/Meta-Llama-3.1-8B/mcore-tp4-pp2 5000000 2000000 /workspace/output_mcore_llama3_1
 ```
 
 #### 指令微调示例
