@@ -67,7 +67,7 @@ HF_CKPT_PATH=$10              # HF的CKPT的路径【可选，mg2hf=true时必�
 
 ```bash
 cd /workspace/Pai-Megatron-Patch/toolkits/model_checkpoints_convertor/llama
-bash hf2mcore_convertor_llama3_1.sh \
+NCCL_TUNER_PLUGIN=none bash hf2mcore_convertor_llama3_1.sh \
 8B \
 /mnt/llama3-ckpts/Meta-Llama-3.1-8B    \
 /mnt/llama3-ckpts/Meta-Llama-3.1-8B/mcore-tp4-pp2  \
@@ -118,11 +118,11 @@ OUTPUT_BASEPATH=${25}           # 训练输出日志文件路径
 
 ```bash
 cd /workspace/Pai-Megatron-Patch/examples/llama3_1
-sh run_mcore_llama3_1.sh  \
+NCCL_TUNER_PLUGIN=none sh run_mcore_llama3_1.sh  \
 dsw  \
 8B   \
-1    \
-8 \
+4    \
+32 \
 1e-5   \
 1e-6   \
 128  \
@@ -137,12 +137,12 @@ true \
 false \
 false   \
 false \
-100000  \
+10000  \
 /mnt/llama3-datasets/wudao_llama3bpe_content_document   \
 /mnt/llama3-datasets/wudao_llama3bpe_content_document   \
 /mnt/llama3-ckpts/Meta-Llama-3.1-8B/mcore-tp4-pp2  \
-10000  \
-100   \
+5000000  \
+2000000   \
 /workspace/output_mcore_llama3_1
 ```
 
